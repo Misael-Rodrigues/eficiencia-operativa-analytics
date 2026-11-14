@@ -1,0 +1,12 @@
+{
+  "turnos": 1086,
+  "unidades_buenas": 407150,
+  "disponibilidad": 0.9144720687538367,
+  "rendimiento": 0.8871167368721365,
+  "calidad": 0.9627913025999977,
+  "oee": 0.7810581645181093,
+  "cumplimiento_objetivo": 0.9613023563299806,
+  "minutos_parada": 44584,
+  "energia_kwh_por_unidad_buena": 0.43996124278521437,
+  "costo_mantenimiento_usd": 139226.28
+}
