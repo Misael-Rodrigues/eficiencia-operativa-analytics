@@ -1,139 +1,232 @@
-# 📊 Análisis de Eficiencia Operativa | Python + Pandas
+# Análisis de Eficiencia Operativa
 
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
-![Estado](https://img.shields.io/badge/estado-proyecto%20completo-success)
-![Licencia](https://img.shields.io/badge/licencia-MIT-blue)
-![Datos](https://img.shields.io/badge/datos-100%25%20sint%C3%A9ticos-orange)
+**Análisis de datos de producción industrial con Python y Pandas**
 
-> Proyecto de analítica de operaciones para transformar datos de producción en indicadores de rendimiento, visualizar pérdidas y formular recomendaciones accionables.
+Este proyecto analiza la eficiencia operativa de tres plantas industriales a partir de datos sintéticos de producción correspondientes al período de enero a junio de 2025.
 
-## 🎯 Problema de negocio
+El análisis se centra en la construcción de indicadores de desempeño, la comparación de resultados entre plantas y turnos y la identificación de posibles oportunidades de mejora en los procesos productivos.
 
-Una empresa manufacturera ficticia opera tres plantas y necesita responder:
+El proyecto incluye generación de datos reproducibles, procesamiento automatizado, visualización de indicadores y pruebas de validación.
 
-1. ¿Qué planta aprovecha mejor su tiempo de producción?
-2. ¿Cuánto afectan las paradas y los defectos a la eficiencia?
-3. ¿Cómo cambia el rendimiento durante seis meses?
-4. ¿Dónde conviene priorizar investigaciones de mejora operacional?
+## 1. Contexto del proyecto
 
-**Objetivo:** medir la eficiencia con KPIs reproducibles y establecer prioridades de optimización.
+En operaciones industriales, el seguimiento de la producción no siempre permite comprender las causas de las pérdidas de eficiencia. Una planta puede presentar un volumen elevado de producción y, al mismo tiempo, registrar problemas relacionados con paradas, rendimiento o calidad.
 
-## 🧰 Tecnologías
+Para explorar estas diferencias, se construyó un escenario simulado con tres plantas manufactureras y registros operacionales de seis meses.
 
-- **Python:** automatización del análisis.
-- **Pandas y NumPy:** generación, validación, limpieza y agrupación.
-- **Matplotlib:** gráficos ejecutivos.
-- **Pytest y GitHub Actions:** controles automáticos de calidad.
+El análisis busca responder las siguientes preguntas:
 
-## 📁 Estructura del repositorio
+- ¿Existen diferencias significativas de eficiencia entre las plantas?
+- ¿Qué impacto tienen las paradas operacionales sobre la disponibilidad?
+- ¿Cómo se comportan los indicadores de rendimiento y calidad?
+- ¿Qué variaciones se observan entre turnos y períodos?
+- ¿Qué aspectos deberían investigarse para orientar iniciativas de mejora?
+
+## 2. Herramientas utilizadas
+
+| Herramienta | Aplicación |
+|---|---|
+| Python 3.11+ | Procesamiento y automatización |
+| Pandas | Manipulación y análisis de datos |
+| NumPy | Cálculos y operaciones numéricas |
+| Matplotlib | Visualización de resultados |
+| Pytest | Validación automatizada |
+| GitHub Actions | Ejecución de pruebas mediante integración continua |
+
+## 3. Datos
+
+La base de datos contiene registros sintéticos de producción generados mediante Python.
+
+Los datos representan operaciones de tres plantas industriales durante el primer semestre de 2025.
+
+El conjunto incluye variables relacionadas con tiempos de producción, paradas operacionales, unidades producidas, defectos, objetivos de producción y consumo energético.
+
+La generación utiliza una semilla fija para permitir la reproducción de los resultados.
+
+El archivo principal se encuentra en:
+
+`data/operaciones.csv`
+
+Las definiciones de las variables, las reglas de cálculo y las consideraciones sobre los datos están documentadas en [DICCIONARIO.md](data/DICCIONARIO.md).
+
+## 4. Metodología
+
+El análisis se desarrolló mediante un proceso de generación, preparación, cálculo y visualización de datos.
+
+### Preparación de datos
+
+Se utilizaron Pandas y NumPy para organizar los registros, verificar su consistencia y preparar las variables necesarias para el cálculo de los indicadores.
+
+### Cálculo de indicadores
+
+Los principales indicadores considerados fueron:
+
+| Indicador | Definición |
+|---|---|
+| Disponibilidad | Tiempo operativo / Tiempo planificado |
+| Rendimiento | Producción real / Capacidad ideal operativa |
+| Calidad | Unidades conformes / Unidades producidas |
+| OEE | Disponibilidad × Rendimiento × Calidad |
+| Cumplimiento | Unidades conformes / Objetivo de producción |
+| Consumo específico de energía | Energía consumida / Unidades conformes |
+
+El OEE (Overall Equipment Effectiveness) se utiliza como indicador principal para evaluar la eficiencia de los equipos, considerando disponibilidad, rendimiento y calidad.
+
+Los indicadores se consolidan por planta, turno y período de análisis.
+
+### Visualización
+
+Se desarrollaron gráficos con Matplotlib para facilitar la comparación de los resultados y la identificación de variaciones operacionales.
+
+Los archivos generados se almacenan en el directorio `reports`.
+
+## 5. Resultados
+
+Los resultados se presentan mediante indicadores consolidados y visualizaciones de desempeño.
+
+### OEE por planta
+
+![OEE por planta](reports/figures/oee_por_planta.png)
+
+Comparación de la eficiencia global entre las tres plantas industriales.
+
+### Evolución mensual del OEE
+
+![Evolución mensual del OEE](reports/figures/tendencia_oee.png)
+
+Comportamiento del indicador durante los seis meses analizados.
+
+### Paradas operacionales
+
+![Paradas operacionales por planta](reports/figures/paradas_por_planta.png)
+
+Comparación del tiempo acumulado de paradas entre las unidades productivas.
+
+Los resultados detallados y los indicadores calculados están disponibles en [reports/resultados.md](reports/resultados.md).
+
+## 6. Consideraciones del análisis
+
+La metodología permite identificar diferencias de desempeño y establecer prioridades para investigaciones operacionales.
+
+Entre las posibles líneas de análisis se encuentran:
+
+- Investigar las plantas con menor OEE, diferenciando las pérdidas de disponibilidad, rendimiento y calidad.
+- Comparar indicadores entre turnos para identificar variaciones operacionales.
+- Incorporar registros de causas de parada para profundizar el diagnóstico.
+- Evaluar las prácticas operativas de las plantas con mejores indicadores.
+- Definir objetivos de desempeño considerando las características de cada proceso productivo.
+
+Los resultados permiten describir patrones y diferencias en los datos simulados, pero no demuestran relaciones causales entre las variables.
+
+## 7. Estructura del repositorio
 
 ```text
 eficiencia-operativa-analytics/
-├── .github/workflows/tests.yml  # Integración continua
+├── .github/
+│   └── workflows/
+│       └── tests.yml
 ├── data/
-│   ├── DICCIONARIO.md          # Esquema de datos y reglas
-│   └── operaciones.csv         # Datos sintéticos
+│   ├── DICCIONARIO.md
+│   └── operaciones.csv
 ├── reports/
-│   ├── figures/                # Gráficos PNG
-│   ├── indicadores.json        # KPIs totales
+│   ├── figures/
+│   ├── indicadores.json
 │   ├── kpis_por_mes.csv
 │   ├── kpis_por_planta.csv
 │   ├── kpis_por_turno.csv
-│   └── resultados.md           # Informe generado
+│   └── resultados.md
 ├── src/
 │   ├── __init__.py
 │   ├── analisis.py
 │   ├── ejecutar.py
 │   └── generar_datos.py
-├── tests/test_analisis.py
+├── tests/
+│   └── test_analisis.py
 ├── .gitignore
 ├── LICENSE
+├── README.md
 ├── requirements.txt
-├── requirements-dev.txt
-└── README.md
+└── requirements-dev.txt
 ```
 
-## 🚀 Cómo ejecutar el proyecto
+## 8. Ejecución del proyecto
 
-Necesitas Python 3.11 o posterior.
+**Requisitos:** Python 3.11 o superior y Git.
+
+Clonar el repositorio:
 
 ```bash
-git clone https://github.com/TU_USUARIO/eficiencia-operativa-analytics.git
+git clone https://github.com/Misael-Rodrigues/eficiencia-operativa-analytics.git
 cd eficiencia-operativa-analytics
+```
+
+Crear un entorno virtual:
+
+```bash
 python -m venv .venv
 ```
 
-Activa el entorno virtual:
+Activar el entorno virtual en Windows:
 
-```bash
-# Linux / macOS
-source .venv/bin/activate
-
-# Windows PowerShell
+```powershell
 .venv\Scripts\Activate.ps1
 ```
 
-Instala las dependencias y ejecuta el análisis desde la raíz:
+En Linux o macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Instalar las dependencias:
 
 ```bash
 python -m pip install -r requirements-dev.txt
+```
+
+Generar los datos y ejecutar el análisis:
+
+```bash
 python -m src.generar_datos
 python -m src.ejecutar
+```
+
+Ejecutar las pruebas:
+
+```bash
 python -m pytest -q
 ```
 
-> `TU_USUARIO` es un marcador: reemplázalo por tu nombre de usuario de GitHub. El CSV ya está incluido, por lo que regenerarlo es opcional. Usa la misma semilla para obtener los mismos resultados.
+El conjunto de datos original está incluido en el repositorio. No es necesario regenerarlo para consultar los resultados existentes.
 
-## 📏 KPIs y metodología
+## 9. Limitaciones
 
-| KPI | Interpretación |
-|---|---|
-| Disponibilidad | Proporción de tiempo planificado en operación |
-| Rendimiento | Producción real respecto a capacidad ideal operativa |
-| Calidad | Porcentaje de unidades sin defectos |
-| **OEE** | Disponibilidad × Rendimiento × Calidad |
-| Cumplimiento | Unidades buenas / objetivo |
-| Energía por unidad buena | Eficiencia del consumo energético |
+El proyecto utiliza exclusivamente datos sintéticos y no representa operaciones de una empresa real.
 
-Las definiciones detalladas están en [el diccionario de datos](data/DICCIONARIO.md).
+Los registros fueron construidos con fines de análisis y demostración, por lo que las conclusiones no deben interpretarse como resultados de una intervención empresarial.
 
-## 📈 Resultados y visualizaciones
+El análisis tiene carácter descriptivo. Los valores económicos y energéticos son simulados y no constituyen una base para decisiones de inversión.
 
-Consulta el informe completo en [reports/resultados.md](reports/resultados.md).
+Para aplicar la metodología en un entorno industrial real, sería necesario revisar la disponibilidad y calidad de los registros, las velocidades ideales de cada línea y los criterios de consolidación de indicadores.
 
-![Comparación del OEE entre plantas](reports/figures/oee_por_planta.png)
+## 10. Posibles desarrollos
 
-![Evolución mensual del OEE](reports/figures/tendencia_oee.png)
+El proyecto puede ampliarse mediante:
 
-![Paradas acumuladas por planta](reports/figures/paradas_por_planta.png)
+- Análisis de Pareto de causas de parada.
+- Desarrollo de un dashboard interactivo en Power BI.
+- Seguimiento de metas de producción por planta y turno.
+- Incorporación de alertas para desviaciones operacionales.
+- Evaluación de resultados antes y después de intervenciones de mejora.
 
-## 💡 Recomendaciones de negocio
+## Autor
 
-- Investigar primero las plantas con menor OEE, diferenciando pérdidas de disponibilidad, velocidad y calidad.
-- Comparar los resultados de los turnos y construir un registro de **causas de parada**.
-- Revisar las prácticas de la planta de mejor desempeño y evaluar si son transferibles.
-- Definir metas basadas en características reales de cada línea, no en umbrales universales.
-- Validar futuras mejoras mediante datos reales y pruebas antes/después.
+**Misael Rodrigues**
 
-## 🔍 Calidad del análisis y limitaciones
+Proyecto independiente de análisis de datos, desarrollado como parte de un portafolio profesional enfocado en Data Analytics, Business Intelligence y eficiencia operacional.
 
-**Todos los datos son sintéticos** (generados por código con una semilla fija) y corresponden a enero-junio de 2025. No representan una empresa real ni permiten inferir demanda de empleo, tendencias sectoriales o beneficios financieros reales.
+[GitHub](https://github.com/Misael-Rodrigues)
 
-El análisis es **descriptivo**, no causal. Los campos de costo y energía son simulaciones; no deben utilizarse para decisiones de inversión. El OEE se calcula con una velocidad ideal homogénea; si se usan velocidades distintas por línea, se deben revisar los factores de agregación.
+## Licencia
 
-## 🗺️ Próximos pasos
-
-- Incorporar registros de motivos de parada y análisis de Pareto.
-- Desarrollar un panel interactivo en Power BI o Streamlit.
-- Incorporar objetivos y alertas por planta/turno.
-- Medir impacto de intervenciones con datos reales.
-
-## 👤 Cómo presentar este proyecto
-
-**Rol simulado:** Analista de Datos / Analista de Eficiencia Operativa.
-
-**Competencias demostradas:** modelado de KPIs, validación, análisis exploratorio, visualización, automatización, pruebas y comunicación de hallazgos.
-
-## 📄 Licencia
-
-MIT. Puedes reutilizar el código con atribución. Los datos incluidos fueron generados sintéticamente para esta demostración.
+Este proyecto se distribuye bajo la licencia MIT. Los datos utilizados fueron generados sintéticamente con fines de demostración.
