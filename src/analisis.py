@@ -24,7 +24,20 @@ def validar_datos(df: pd.DataFrame) -> None:
         raise ValueError(f"Faltan columnas: {sorted(faltantes)}")
     if df.empty or df[list(COLUMNAS_REQUERIDAS)].isna().any().any():
         raise ValueError("El conjunto de datos está vacío o contiene valores nulos.")
-    numericas = list(COLUMNAS_REQUERIDAS - {"fecha", "planta", "turno"})
+    if pd.to_datetime(df["fecha"], format="%Y-%m-%d", errors="coerce").isna().any():
+        raise ValueError("Se detectaron fechas no válidas.")
+    if df[["planta", "turno"]].astype(str).apply(lambda s: s.str.strip().eq("")).any().any():
+        raise ValueError("Planta y turno son obligatorios.")
+    numericas = sorted(COLUMNAS_REQUERIDAS - {"fecha", "planta", "turno"})
+    if any(not pd.api.types.is_numeric_dtype(df[c]) for c in numericas):
+        raise ValueError("Las variables cuantitativas deben ser numéricas.")
+    if not np.isfinite(df[numericas].to_numpy(dtype=float)).all():
+        raise ValueError("Se detectaron valores numéricos no finitos.")
+    for columna in ("minutos_planificados", "minutos_parada", "minutos_operativos",
+                    "unidades_producidas", "unidades_defectuosas", "unidades_buenas",
+                    "objetivo_unidades_buenas"):
+        if (df[columna] % 1 != 0).any():
+            raise ValueError(f"{columna} debe contener números enteros.")
     if (df[numericas] < 0).any().any():
         raise ValueError("Se detectaron valores negativos.")
     if not (df["minutos_planificados"] > 0).all():
@@ -54,7 +67,9 @@ def calcular_kpis(df: pd.DataFrame) -> dict:
     disponibilidad = operativos / planificados if planificados else np.nan
     rendimiento = producidas / capacidad_ideal_operativa if capacidad_ideal_operativa else np.nan
     calidad = buenas / producidas if producidas else np.nan
-    # OEE agregado para una velocidad ideal común o mediante capacidad ideal ponderada.
+    # OEE agregado = unidades buenas / capacidad ideal planificada.
+    # Con velocidades diferentes no es necesariamente el producto de los tres
+    # factores anteriores, ya que disponibilidad está ponderada por tiempo.
     oee = buenas / capacidad_ideal_planificada if capacidad_ideal_planificada else np.nan
     objetivo_total = df["objetivo_unidades_buenas"].sum()
     return {

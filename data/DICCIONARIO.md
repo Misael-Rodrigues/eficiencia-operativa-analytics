@@ -27,6 +27,9 @@ Una fila corresponde a **una planta, una fecha y un turno**.
 - **Cumplimiento** = Σ unidades buenas / Σ objetivo de unidades buenas.
 - **Intensidad energética** = Σ kWh / Σ unidades buenas.
 
+El OEE agregado se obtiene como Σ unidades buenas / Σ (minutos planificados × velocidad ideal).
+Cuando las velocidades ideales varían, el OEE así calculado puede diferir del producto de
+la disponibilidad ponderada por tiempo, el rendimiento agregado y la calidad agregada.
 La agregación por sumas evita promediar porcentajes de turnos con pesos distintos.
 En este proyecto la velocidad ideal es constante (1 unidad/min), por eso la identidad de OEE es exacta.
 Los costes y los volúmenes son simulados y no son presupuestos ni cotizaciones reales.

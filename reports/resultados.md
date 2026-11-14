@@ -38,6 +38,5 @@
 
 ## Limitaciones
 
-El estudio es demostrativo y descriptivo, sin inferencia causal, sin incertidumbre estadística
-estimada y sin demanda observada del mundo real. La referencia de OEE de 85 % es ilustrativa;
-no debe usarse como meta universal sin conocer el proceso industrial.
+El estudio es demostrativo y descriptivo, sin inferencia causal ni datos observados
+del mundo real. No se utiliza un umbral universal de OEE.

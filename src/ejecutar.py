@@ -28,34 +28,53 @@ def ejecutar() -> None:
     por_mes.to_csv(SALIDA / "kpis_por_mes.csv", index=False, float_format="%.6f")
     por_turno.to_csv(SALIDA / "kpis_por_turno.csv", index=False, float_format="%.6f")
 
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    ax.bar(por_planta["planta"], por_planta["oee"] * 100)
-    ax.axhline(85, color="gray", linestyle="--", label="Referencia ilustrativa: 85 %")
-    ax.set_ylim(0, 100)
-    ax.set_ylabel("OEE (%)")
-    ax.set_title("Eficiencia global de equipos por planta")
-    ax.legend()
-    fig.tight_layout()
-    fig.savefig(FIGURAS / "oee_por_planta.png", dpi=160)
+    # Diseño consistente para informes: azul ENPROL, sin referencias universales de OEE.
+    AZUL = "#0D3755"
+    plt.rcParams.update({
+        "font.family": "DejaVu Sans",  # Alternativa libre si Sequel no está instalada
+        "font.size": 11, "axes.spines.top": False,
+        "axes.spines.right": False, "savefig.facecolor": "white",
+    })
+
+    fig, ax = plt.subplots(figsize=(9, 5.2))
+    datos = por_planta.sort_values("oee", ascending=False)
+    barras = ax.barh(datos["planta"], datos["oee"] * 100, color=AZUL, height=0.55)
+    ax.invert_yaxis()
+    ax.set_xlim(0, 100)
+    ax.set_xlabel("OEE (%)")
+    ax.set_title("Eficiencia global por planta", loc="left", fontsize=16, pad=16)
+    ax.bar_label(barras, fmt="%.1f %%", padding=6)
+    ax.grid(axis="x", alpha=0.15)
+    ax.set_axisbelow(True)
+    fig.tight_layout(pad=2)
+    fig.savefig(FIGURAS / "oee_por_planta.png", dpi=220)
     plt.close(fig)
 
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    ax.plot(por_mes["mes"], por_mes["oee"] * 100, marker="o")
+    fig, ax = plt.subplots(figsize=(9, 5.2))
+    x = range(len(por_mes))
+    ax.plot(x, por_mes["oee"] * 100, color=AZUL, linewidth=2.8, marker="o", markersize=6)
+    ax.set_xticks(list(x), por_mes["mes"])
     ax.set_ylim(0, 100)
     ax.set_ylabel("OEE (%)")
-    ax.set_xlabel("Mes")
-    ax.set_title("Evolución mensual del OEE")
-    ax.grid(alpha=0.3)
-    fig.tight_layout()
-    fig.savefig(FIGURAS / "tendencia_oee.png", dpi=160)
+    ax.set_title("Evolución mensual del OEE", loc="left", fontsize=16, pad=16)
+    ax.grid(axis="y", alpha=0.2)
+    ax.set_axisbelow(True)
+    fig.tight_layout(pad=2)
+    fig.savefig(FIGURAS / "tendencia_oee.png", dpi=220)
     plt.close(fig)
 
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    ax.bar(por_planta["planta"], por_planta["minutos_parada"] / 60)
-    ax.set_ylabel("Horas de parada")
-    ax.set_title("Tiempo de inactividad acumulado por planta")
-    fig.tight_layout()
-    fig.savefig(FIGURAS / "paradas_por_planta.png", dpi=160)
+    fig, ax = plt.subplots(figsize=(9, 5.2))
+    datos = por_planta.sort_values("minutos_parada", ascending=False)
+    barras = ax.barh(datos["planta"], datos["minutos_parada"] / 60, color=AZUL, height=0.55)
+    ax.invert_yaxis()
+    ax.set_xlabel("Horas acumuladas")
+    ax.set_title("Tiempo de parada por planta", loc="left", fontsize=16, pad=16)
+    ax.bar_label(barras, fmt="%.0f h", padding=5)
+    ax.margins(x=0.2)
+    ax.grid(axis="x", alpha=0.15)
+    ax.set_axisbelow(True)
+    fig.tight_layout(pad=2)
+    fig.savefig(FIGURAS / "paradas_por_planta.png", dpi=220)
     plt.close(fig)
 
     resumen = [
@@ -103,9 +122,8 @@ def ejecutar() -> None:
         "![Horas de parada](figures/paradas_por_planta.png)",
         "",
         "## Limitaciones", "",
-        "El estudio es demostrativo y descriptivo, sin inferencia causal, sin incertidumbre estadística",
-        "estimada y sin demanda observada del mundo real. La referencia de OEE de 85 % es ilustrativa;",
-        "no debe usarse como meta universal sin conocer el proceso industrial.",
+        "El estudio es demostrativo y descriptivo, sin inferencia causal ni datos observados",
+        "del mundo real. No se utiliza un umbral universal de OEE.",
     ]
     (SALIDA / "resultados.md").write_text("\n".join(resumen) + "\n", encoding="utf-8")
     print(f"Análisis finalizado. OEE global: {globales['oee']:.1%}")
